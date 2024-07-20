@@ -20,7 +20,7 @@ func TestMake(t *testing.T) {
 				len(tt.expected), len(instruction))
 		}
 		for i, b := range tt.expected {
-			if instruction[i] != tt.expected {
+			if instruction[i] != tt.expected[i] {
 				t.Errorf("wrong byte at pos %d. want=%d, got=%d",
 					i, b, instruction[i])
 			}
