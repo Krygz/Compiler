@@ -1,6 +1,8 @@
 package compiler
 
 import (
+	"fmt"
+	"go/ast"
 	"testing"
 
 	"github.com/krygz/code"
@@ -47,4 +49,24 @@ func runCompilerTests(t *testing.T, tests []compilerTestCase) {
 
 		}
 	}
+}
+
+func parse(input string) *ast.Program {
+	l := lexer.New(input)
+	p := parse.New(l)
+	return p.ParseProgram()
+}
+
+func testInstructions(expected []code.Instructions, actual code.Instructions) error {
+	concatted := concatInstructions(expected)
+	if len(actual) != len(concatted) {
+		return fmt.Errorf("wrong instructions length.\nwant=%q\ngot=%q", concatted, actual)
+	}
+	for i, ins := range concatted {
+		if actual[i] != ins {
+			return fmt.Errorf("wrong instruction at %d.\nwant=%q\ngot =%q",
+				i, concatted, actual)
+		}
+	}
+	return nil
 }
